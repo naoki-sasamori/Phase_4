@@ -5,8 +5,72 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Phase_4"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Phase_4" Height="600" Width="810"
+        ContentRendered="Windows_ContentRendered"
+        Closing="Windows_Closing">
+    <Window.Resources>
+        <Style x:Key="stackPanelStyle" TargetType="StackPanel">
+            <Setter Property="Orientation" Value="Horizontal" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="Margin" Value="0,5,0 0" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+        </Style>
+        <Style x:Key="sliderStyle" TargetType="Slider">
+            <Setter Property="Height" Value="20" />
+            <Setter Property="Width" Value="90" />
+            <Setter Property="Margin" Value="10,0,0,0" />
+            <Setter Property="IsSnapToTickEnabled" Value="True" />
+        </Style>
+        <Style x:Key="labelStyle" TargetType="Label">
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Width" Value="50" />
+        </Style>
+        <Style x:Key="TextBlockStyle" TargetType="TextBlock">
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Width" Value="50" />
+        </Style>
+    </Window.Resources>
+
+    <DockPanel>
+        <StackPanel Orientation="Vertical" DockPanel.Dock="Top">
+            <StackPanel Orientation="Horizontal">
+                <GroupBox Header="操作" Margin="10,0,10,0" Width="60" Height="60">
+                    <Button Content="開く" Margin="0,5,0,0" Width="30" Height="25" />
+                </GroupBox>
+                <GroupBox Header="サムネイルサイズ" >
+                    <StackPanel Style="{StaticResource stackPanelStyle}">
+                        <Label Content="Middle：" Style="{StaticResource labelStyle}"/>
+                        <Slider Name="sliderSize" Style="{StaticResource sliderStyle}" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="拡大／縮小">
+                    <StackPanel Style="{StaticResource stackPanelStyle}">
+                        <TextBlock Text="{Binding ElementName=sliderScaling, Path=Value, Mode=OneWay, StringFormat=0.0倍：}" Style="{StaticResource TextBlockStyle}"/>
+                        <Slider Name="sliderScaling" Style="{StaticResource sliderStyle}" Maximum="5" Minimum="0.1" Value="1" TickFrequency="0.1" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="回転" >
+                    <StackPanel Style="{StaticResource stackPanelStyle}">
+                        <TextBlock Text="{Binding ElementName=sliderRotation, Path=Value, Mode=OneWay, StringFormat=000度：}" Style="{StaticResource TextBlockStyle}"/>
+                        <Slider Name="sliderRotation" Style="{StaticResource sliderStyle}" Maximum="360" Minimum="0" Value="0" TickFrequency="1" />
+                    </StackPanel>
+                </GroupBox>
+                <TextBox x:Name="filePath" HorizontalAlignment="Left" Height="20" Width="200" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" />
+            </StackPanel>
+
+            <ListBox HorizontalAlignment="Left" Height="80" Width="770" Margin="10,10,0,0" VerticalAlignment="Top" />
+        </StackPanel>
+
+        <ScrollViewer Name="scrollViewer1" HorizontalScrollBarVisibility="Auto" >
+            <Image Source="C:\work/sakura.jpg" Height="400" Width="400" DockPanel.Dock="Bottom" >
+                <Image.LayoutTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="{Binding ElementName=sliderScaling, Path=Value, Mode=OneWay}" ScaleY="{Binding ElementName=sliderScaling,Path=Value, Mode=OneWay}"/>
+                        <RotateTransform Angle="{Binding ElementName=sliderRotation, Path=Value, Mode=OneWay}"/>
+                    </TransformGroup>
+                </Image.LayoutTransform>
+            </Image>
+        </ScrollViewer>
+    </DockPanel>
 </Window>
