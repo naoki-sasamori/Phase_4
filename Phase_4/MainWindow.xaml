@@ -3,16 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Phase_4"
         mc:Ignorable="d"
         Title="Phase_4" Height="600" Width="810"
-        ContentRendered="Windows_ContentRendered"
+        Loaded="Windows_Loaded"
         Closing="Windows_Closing">
     <Window.Resources>
         <Style x:Key="stackPanelStyle" TargetType="StackPanel">
             <Setter Property="Orientation" Value="Horizontal" />
-            <Setter Property="Height" Value="30" />
-            <Setter Property="Width" Value="150" />
             <Setter Property="Margin" Value="0,5,0 0" />
             <Setter Property="VerticalAlignment" Value="Top" />
         </Style>
@@ -62,8 +59,8 @@
             <ListBox HorizontalAlignment="Left" Height="80" Width="770" Margin="10,10,0,0" VerticalAlignment="Top" />
         </StackPanel>
 
-        <ScrollViewer Name="scrollViewer1" HorizontalScrollBarVisibility="Auto" >
-            <Image Source="C:\work/sakura.jpg" Height="400" Width="400" DockPanel.Dock="Bottom" >
+        <ScrollViewer Name="scrollViewer1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="10,10,10,10">
+            <Image Source="C:\work/Phase_4/image/sakura.jpg" Height="400" Width="400" >
                 <Image.LayoutTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="{Binding ElementName=sliderScaling, Path=Value, Mode=OneWay}" ScaleY="{Binding ElementName=sliderScaling,Path=Value, Mode=OneWay}"/>

@@ -4,7 +4,6 @@ C:\Users\10206\git\Phase_4\Phase_4\bin\Debug\Phase_4.pdb
 C:\Users\10206\git\Phase_4\Phase_4\obj\Debug\MainWindow.g.cs
 C:\Users\10206\git\Phase_4\Phase_4\obj\Debug\App.g.cs
 C:\Users\10206\git\Phase_4\Phase_4\obj\Debug\Phase_4_MarkupCompile.cache
-C:\Users\10206\git\Phase_4\Phase_4\obj\Debug\Phase_4_MarkupCompile.lref
 C:\Users\10206\git\Phase_4\Phase_4\obj\Debug\MainWindow.baml
 C:\Users\10206\git\Phase_4\Phase_4\obj\Debug\Phase_4.g.resources
 C:\Users\10206\git\Phase_4\Phase_4\obj\Debug\Phase_4.Properties.Resources.resources
