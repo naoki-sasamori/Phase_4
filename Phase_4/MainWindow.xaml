@@ -3,11 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Phase_4"
         mc:Ignorable="d"
         Title="Phase_4" Height="600" Width="810"
         Loaded="Windows_Loaded"
         Closing="Windows_Closing">
     <Window.Resources>
+        <local:ThumbnailSize x:Key="thumbnailSize" />
+        <local:ThumbnailWidth x:Key="thumbnailWidth" />
+        <local:ThumbnailHeight x:Key="thumbnailHeight" />
+        <local:ImageConverter x:Key="ImageConverter"/>
+        
         <Style x:Key="stackPanelStyle" TargetType="StackPanel">
             <Setter Property="Orientation" Value="Horizontal" />
             <Setter Property="Margin" Value="0,5,0 0" />
@@ -19,10 +25,6 @@
             <Setter Property="Margin" Value="10,0,0,0" />
             <Setter Property="IsSnapToTickEnabled" Value="True" />
         </Style>
-        <Style x:Key="labelStyle" TargetType="Label">
-            <Setter Property="Height" Value="30" />
-            <Setter Property="Width" Value="50" />
-        </Style>
         <Style x:Key="TextBlockStyle" TargetType="TextBlock">
             <Setter Property="Height" Value="30" />
             <Setter Property="Width" Value="50" />
@@ -32,35 +34,68 @@
     <DockPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Top">
             <StackPanel Orientation="Horizontal">
+
+                <!--「開く」ボタン-->
                 <GroupBox Header="操作" Margin="10,0,10,0" Width="60" Height="60">
-                    <Button Content="開く" Margin="0,5,0,0" Width="30" Height="25" />
+                    <Button Content="開く" Margin="0,5,0,0" Width="30" Height="25" Click="buttonOpen_Click"/>
                 </GroupBox>
+
+                <!--サムネイルサイズ-->
                 <GroupBox Header="サムネイルサイズ" >
                     <StackPanel Style="{StaticResource stackPanelStyle}">
-                        <Label Content="Middle：" Style="{StaticResource labelStyle}"/>
-                        <Slider Name="sliderSize" Style="{StaticResource sliderStyle}" />
+                        <TextBlock Text="{Binding ElementName=sliderSize, Path=Value, Converter={StaticResource thumbnailSize}, Mode=OneWay}" Style="{StaticResource TextBlockStyle}"/>
+                        <Slider Name="sliderSize" Style="{StaticResource sliderStyle}" Maximum="3" Minimum="1" Value="2"/>
                     </StackPanel>
                 </GroupBox>
+
+                <!--拡大／縮小-->
                 <GroupBox Header="拡大／縮小">
                     <StackPanel Style="{StaticResource stackPanelStyle}">
                         <TextBlock Text="{Binding ElementName=sliderScaling, Path=Value, Mode=OneWay, StringFormat=0.0倍：}" Style="{StaticResource TextBlockStyle}"/>
-                        <Slider Name="sliderScaling" Style="{StaticResource sliderStyle}" Maximum="5" Minimum="0.1" Value="1" TickFrequency="0.1" />
+                        <Slider Name="sliderScaling" Style="{StaticResource sliderStyle}" Maximum="5" Minimum="0.1" Value="1.0" TickFrequency="0.1" />
                     </StackPanel>
                 </GroupBox>
+
+                <!--回転-->
                 <GroupBox Header="回転" >
                     <StackPanel Style="{StaticResource stackPanelStyle}">
                         <TextBlock Text="{Binding ElementName=sliderRotation, Path=Value, Mode=OneWay, StringFormat=000度：}" Style="{StaticResource TextBlockStyle}"/>
                         <Slider Name="sliderRotation" Style="{StaticResource sliderStyle}" Maximum="360" Minimum="0" Value="0" TickFrequency="1" />
                     </StackPanel>
                 </GroupBox>
-                <TextBox x:Name="filePath" HorizontalAlignment="Left" Height="20" Width="200" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" />
+
+                <!--テキストボックス-->
+                <TextBox x:Name="filePath" Text="TextBox" HorizontalAlignment="Left" Height="20" Width="200" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" />
             </StackPanel>
 
-            <ListBox HorizontalAlignment="Left" Height="80" Width="770" Margin="10,10,0,0" VerticalAlignment="Top" />
+            <!--サムネイル-->
+            <ListBox x:Name="listBoxThumbnail" ItemsSource="{Binding}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Left" Height= "100" Width="770" Margin="10,10,0,0" VerticalAlignment="Top" >
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Width="{Binding ElementName=sliderSize, Path=Value, Converter={StaticResource thumbnailWidth}}" Height="{Binding ElementName=sliderSize, Path=Value, Converter={StaticResource thumbnailHeight}}">
+                            <!--ビットマップ版-->
+                            <Image Source="{Binding Image, Converter={StaticResource ImageConverter}}" />
+                            <!--ファイルパス版-->
+                            <!--<Image Source="{Binding Path=Image, Mode=OneWay}" />-->
+                            
+                            <!--ファイル名表示途中-->
+                            <!--<TextBlock Text="{Binding Title}" />-->
+                            <!--<TextBlock Text="{Binding}" Foreground="Yellow"/>
+                            <Rectangle Stroke="Red" Height="10" Width="10" Fill="Black"/>-->
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </StackPanel>
 
+        <!--イメージ-->
         <ScrollViewer Name="scrollViewer1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="10,10,10,10">
-            <Image Source="C:\work/Phase_4/image/sakura.jpg" Height="400" Width="400" >
+            <Image x:Name="imageBottom" Stretch="None" Source="{Binding ElementName=listBoxThumbnail, Path=SelectedItem.Image, Mode=OneWay}">
                 <Image.LayoutTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="{Binding ElementName=sliderScaling, Path=Value, Mode=OneWay}" ScaleY="{Binding ElementName=sliderScaling,Path=Value, Mode=OneWay}"/>

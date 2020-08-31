@@ -11,4 +11,5 @@ C:\Users\10206\git\Phase_4\Phase_4\obj\Debug\Phase_4.csproj.GenerateResource.cac
 C:\Users\10206\git\Phase_4\Phase_4\obj\Debug\Phase_4.csproj.CoreCompileInputs.cache
 C:\Users\10206\git\Phase_4\Phase_4\obj\Debug\Phase_4.exe
 C:\Users\10206\git\Phase_4\Phase_4\obj\Debug\Phase_4.pdb
-C:\Users\10206\git\Phase_4\Phase_4\obj\Debug\Phase_4.csprojAssemblyReference.cache
+C:\Users\10206\git\Phase_4\Phase_4\obj\Debug\Phase_4_MarkupCompile.lref
+C:\Users\10206\git\Phase_4\Phase_4\obj\Debug\GeneratedInternalTypeHelper.g.cs

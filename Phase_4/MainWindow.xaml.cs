@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Linq;      // Selectに必要
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
+
+// フォルダー選択ダイアログの名前空間を using
+using Forms = System.Windows.Forms;
 
 namespace Phase_4
 {
@@ -25,21 +19,50 @@ namespace Phase_4
             InitializeComponent();
         }
 
+        // --------------------------------------------------
+        // フォルダー参照ダイアログボックスを表示
+        // --------------------------------------------------
+        private void buttonOpen_Click(object sender, RoutedEventArgs e)
+        {
+            // フォルダー参照ダイアログのインスタンスを生成
+            var dlg = new Forms.FolderBrowserDialog();
+
+            dlg.Description = "フォルダーを選択してください";
+
+            // フォルダー参照ダイアログを表示
+            if ( dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK ) {
+
+                // パスをテキストボックスに表示
+                this.filePath.Text = dlg.SelectedPath;
+
+                // 指定フォルダー内にあるファイルの名称(パス含む)を取得
+                var files = Directory.GetFiles(dlg.SelectedPath);
+                var images = files.Select(f => new ImageFolder() { Image = f }).ToList();
+                DataContext = images;
+            }
+        }
+
+        // --------------------------------------------------
         // アプリケーション処理開始時
+        // --------------------------------------------------
         private void Windows_Loaded(object sender, EventArgs e)
         {
             // ウィンドウに関する設定値を取得
             LoadWindowsInfo();
         }
 
+        // --------------------------------------------------
         // アプリケーション終了時
+        // --------------------------------------------------
         private void Windows_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             // ウィンドウに関する設定値を保持
             SaveWiodowsInfo();
         }
 
+        // --------------------------------------------------
         // ウィンドウに関する設定値を取得
+        // --------------------------------------------------
         private void LoadWindowsInfo()
         {
             var settings = Properties.Settings.Default;
@@ -68,7 +91,9 @@ namespace Phase_4
             }
         }
 
+        // --------------------------------------------------
         // ウィンドウに関する設定値を保持
+        // --------------------------------------------------
         private void SaveWiodowsInfo()
         {
             var settings = Properties.Settings.Default;
